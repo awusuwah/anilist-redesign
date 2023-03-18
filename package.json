@@ -8,6 +8,15 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.3.1"
+    "autoprefixer": "^10.4.14",
+    "nuxt": "^3.3.1",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.2.4",
+    "@pinia/nuxt": "^0.4.7",
+    "nuxt-graphql-client": "^0.2.27",
+    "pinia": "^2.0.33"
   }
 }

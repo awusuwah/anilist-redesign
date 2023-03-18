@@ -1,0 +1,48 @@
+query anime($id: Int) {
+  Media(id: $id, type: ANIME) {
+    id
+    title {
+      english
+      native
+    }
+    description
+    coverImage {
+      extraLarge
+    }
+    averageScore
+    characters(sort: RELEVANCE, page: 1, perPage: 6) {
+      nodes {
+        id
+        name {
+          full
+        }
+        image {
+          large
+        }
+        siteUrl
+      }
+    }
+    rankings {
+      id
+      rank
+      context
+    }
+    startDate {
+      year
+      month
+      day
+    }
+    endDate {
+      year
+      month
+      day
+    }
+    studios(isMain: true) {
+      nodes {
+        id
+        name
+      }
+    }
+    genres
+  }
+}
