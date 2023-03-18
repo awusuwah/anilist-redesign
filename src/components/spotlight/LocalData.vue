@@ -6,7 +6,12 @@
       <div v-for="anime in allAnimes" :key="anime.id" :class="itemClasses">
         <span>{{ anime.title.english }}</span>
         <div class="flex flex-row gap-x-1">
-          <Icon icon="check" size="md" :class="[checkIconClasses]" @click="displayAnime(anime.id)" />
+          <Icon
+            icon="check"
+            size="md"
+            :class="[checkIconClasses, { 'text-emerald-500': anime.id === currentlyViewing.id }]"
+            @click="displayAnime(anime.id)"
+          />
 
           <Icon
             icon="delete"
@@ -73,7 +78,6 @@ export default {
      */
     displayAnime(animeId: number) {
       useAnimeStore().setCurrentlyViewing(animeId);
-      this.$emit("close");
     },
   },
 };

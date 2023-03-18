@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { computePosition, arrow, flip, offset, shift } from "@floating-ui/dom";
+import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 
 export default {
   name: "Tooltip",
@@ -64,29 +64,11 @@ export default {
       // Compute the position for the tooltip
       computePosition(activatorRef, tooltipRef, {
         placement: this.placement as any,
-        middleware: [offset(this.offset), shift({ padding: 20 }), flip(), arrow({ element: arrowRef })],
-      }).then(({ x, y, placement, middlewareData }) => {
+        middleware: [offset(this.offset), shift({ padding: 20 }), flip()],
+      }).then(({ x, y }) => {
         Object.assign(tooltipRef.style, {
           top: `${y}px`,
           left: `${x}px`,
-        });
-
-        const staticSide = {
-          top: "bottom",
-          right: "left",
-          bottom: "top",
-          left: "right",
-        }[placement.split("-")[0]] as any;
-
-        const arrowX = middlewareData?.arrow?.x;
-        const arrowY = middlewareData?.arrow?.y;
-
-        Object.assign(arrowRef.style, {
-          top: arrowY != null ? `${arrowY}px` : "",
-          left: arrowX != null ? `${arrowX}px` : "",
-          right: "",
-          bottom: "",
-          [staticSide]: "-4px",
         });
       });
     },

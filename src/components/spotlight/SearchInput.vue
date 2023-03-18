@@ -10,17 +10,19 @@
         type="text"
         class="w-full h-14 bg-gray-800"
         :class="inputClasses"
-        placeholder="Trigger commands or navigate to any page"
+        placeholder="Try things like 'add-anime:143270' or 'remove-anime:143270'"
         @blur="focused = false"
         @focus="focused = true"
       />
     </div>
 
-    <button :class="buttonClasses">Query</button>
+    <button :class="buttonClasses" @click="submitAction">Query</button>
   </div>
 </template>
 
 <script lang="ts">
+import { processQuery } from "~/utils/spotlightQuery";
+
 export default {
   name: "SearchInput",
   data() {
@@ -48,6 +50,15 @@ export default {
       return {
         "px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold transition-all focus:outline-none": true,
       };
+    },
+  },
+  methods: {
+    /**
+     * The search has been triggered.
+     */
+    submitAction() {
+      processQuery(this.query);
+      this.query = "";
     },
   },
 };

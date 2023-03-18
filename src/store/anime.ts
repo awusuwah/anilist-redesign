@@ -52,6 +52,7 @@ export const useAnimeStore = defineStore("anime", {
     deleteAnime(animeId: number) {
       const allAnimes = this.animes.filter((anime: Anime) => anime.id !== animeId);
       this.animes = allAnimes;
+      this.currentlyViewing = animeId !== this.currentlyViewing ? this.currentlyViewing : allAnimes.length > 0 ? allAnimes[0].id : null;
 
       // Store the anime in localStorage
       localStorage.setItem("animes", JSON.stringify(allAnimes));

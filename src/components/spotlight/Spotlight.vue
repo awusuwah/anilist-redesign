@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div>
       <transition name="fade" appear>
-        <div class="absolute inset-0 bg-black bg-opacity-70" />
+        <div class="absolute inset-0 bg-black bg-opacity-80" />
       </transition>
 
       <transition name="fade" appear>
@@ -11,7 +11,7 @@
             <SearchInput />
 
             <div>
-              <LocalData @close="$emit('close')" />
+              <LocalData />
             </div>
           </section>
         </div>
