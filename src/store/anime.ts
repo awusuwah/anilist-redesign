@@ -6,6 +6,7 @@ import { defineStore } from "pinia";
 export const useAnimeStore = defineStore("anime", {
   state: () => ({
     animes: [] as Anime[],
+    currentlyViewing: null as number | null,
   }),
   getters: {
     /**
@@ -13,6 +14,20 @@ export const useAnimeStore = defineStore("anime", {
      */
     getAnimeById: (state) => {
       return (animeId: number) => state.animes.find((anime: Anime) => anime.id === animeId);
+    },
+
+    /**
+     * Get every single anime in the store.
+     */
+    getAllAnimes: (state) => {
+      return () => state.animes;
+    },
+
+    /**
+     * Get the anime that is currently being viewed.
+     */
+    getCurrentlyViewing: (state) => {
+      return () => state.animes.find((anime: Anime) => anime.id === state.currentlyViewing);
     },
   },
   actions: {
@@ -26,7 +41,20 @@ export const useAnimeStore = defineStore("anime", {
       this.animes = allAnimes;
 
       // Store the anime in localStorage
-      window.localStorage.setItem("animes", JSON.stringify(allAnimes));
+      localStorage.setItem("animes", JSON.stringify(allAnimes));
+    },
+
+    /**
+     * Delete an anime from the store.
+     *
+     * @param { number } animeId - The id of the anime to delete.
+     */
+    deleteAnime(animeId: number) {
+      const allAnimes = this.animes.filter((anime: Anime) => anime.id !== animeId);
+      this.animes = allAnimes;
+
+      // Store the anime in localStorage
+      localStorage.setItem("animes", JSON.stringify(allAnimes));
     },
 
     /**
@@ -37,6 +65,16 @@ export const useAnimeStore = defineStore("anime", {
     setAnimes(animes: Anime[]) {
       this.animes = animes;
       localStorage.setItem("animes", JSON.stringify(animes));
+    },
+
+    /**
+     * Set what anime is currently being viewed.
+     *
+     * @param { number } animeId - The id of the anime to set as currently viewing.
+     */
+    setCurrentlyViewing(animeId: number) {
+      this.currentlyViewing = animeId;
+      localStorage.setItem("currentlyViewing", JSON.stringify(animeId));
     },
   },
 });

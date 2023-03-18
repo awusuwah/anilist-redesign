@@ -9,8 +9,6 @@ import { useAnimeStore, type Anime } from "~/store/anime";
 export const fetchAnime = async (id: number) => {
   if (!id) return;
 
-  console.log("id", id);
-
   // Check if the anime is stored in the store
   const animeData = useAnimeStore().getAnimeById(id);
   if (animeData) return animeData;

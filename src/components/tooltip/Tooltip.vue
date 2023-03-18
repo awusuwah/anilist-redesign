@@ -8,9 +8,6 @@
     <!-- The tooltip element -->
     <div v-bind="$attrs" v-show="tooltipShown" ref="tooltip" :class="tooltipClasses">
       <slot name="content" />
-
-      <!-- The arrow element -->
-      <i ref="arrow" :class="arrowClasses" />
     </div>
   </div>
 </template>
@@ -49,13 +46,6 @@ export default {
      */
     tooltipClasses() {
       return "tooltip absolute top-0 left-0 px-3 py-2 bg-gray-200 text-gray-900 text-sm rounded";
-    },
-
-    /**
-     * The classes which are applied to the arrow of the tooltip.
-     */
-    arrowClasses() {
-      return "tooltip-arrow absolute bg-gray-200";
     },
   },
   methods: {

@@ -5,12 +5,13 @@
     </section>
 
     <section class="flex-1 px-4 py-5 text-xs text-gray-300 flex flex-col justify-between">
-      <h1 class="font-bold text-lg text-white drop-shadow-xl flex flex-row gap-x-3">
-        {{ anime.title.english }}
-        <StarRating :rating="anime.averageScore" />
-      </h1>
-
-      <p class="desc" v-html="anime.description" />
+      <div>
+        <h1 class="font-bold text-lg text-white drop-shadow-xl flex flex-row gap-x-3">
+          {{ anime.title.english }}
+          <StarRating :rating="anime.averageScore" />
+        </h1>
+        <p class="desc" v-html="anime.description" />
+      </div>
 
       <!-- Information Grid -->
       <div class="grid grid-cols-4">
@@ -24,21 +25,22 @@
         <div class="col-span-3">{{ anime.genres.join(", ") }}</div>
       </div>
 
-      <!-- Rankings -->
-      <div class="flex flex-row gap-x-5">
-        <div class="flex flex-row gap-x-2">
-          <Icon icon="star-filled" size="sm" class="text-amber-500 drop-shadow-lg" />
-          <span>{{ ratedString }}</span>
+      <div>
+        <!-- Rankings -->
+        <div class="flex flex-row gap-x-5">
+          <div class="flex flex-row gap-x-2">
+            <Icon icon="star-filled" size="sm" class="text-amber-500 drop-shadow-lg" />
+            <span>{{ `#${this.anime?.rankings[0].rank} ${this.anime?.rankings[0].context}` }}</span>
+          </div>
+          <div class="flex flex-row gap-x-2">
+            <Icon icon="heart-filled" size="sm" class="text-red-700 drop-shadow-lg" />
+            <span>{{ `#${this.anime?.rankings[1].rank} ${this.anime?.rankings[1].context}` }}</span>
+          </div>
         </div>
-        <div class="flex flex-row gap-x-2">
-          <Icon icon="heart-filled" size="sm" class="text-red-500 drop-shadow-lg" />
-          <span>{{ ratedString }}</span>
+        <!-- The characters from the anime -->
+        <div class="flex flex-row gap-x-3 mt-2">
+          <CharacterCard v-for="character in anime.characters.nodes" :key="character.id" :character="character" />
         </div>
-      </div>
-
-      <!-- The characters from the anime -->
-      <div class="flex flex-row gap-x-3 mt-2">
-        <CharacterCard v-for="character in anime.characters.nodes" :key="character.id" :character="character" />
       </div>
     </section>
   </article>
@@ -53,7 +55,7 @@ import { useAnimeStore, type Anime } from "~/store/anime";
 import { fetchAnime } from "~/utils/fetchData";
 
 // Static Variables
-const ANIME_ID = 21685;
+const ANIME_ID = 142329;
 
 export default {
   name: "AnimeShowcase",
@@ -63,11 +65,13 @@ export default {
     StarRating,
   },
   async setup() {
-    fetchAnime(ANIME_ID);
+    const currentlyViewing: any = useAnimeStore().getCurrentlyViewing();
+    fetchAnime(currentlyViewing?.id);
   },
   computed: {
     anime() {
-      return useAnimeStore().getAnimeById(ANIME_ID);
+      const animeStore = useAnimeStore();
+      return animeStore.getAnimeById(animeStore.getCurrentlyViewing()?.id);
     },
     ratedString() {
       return `#${this.anime?.rankings[0].rank} ${this.anime?.rankings[0].context}`;
@@ -80,7 +84,7 @@ export default {
 /* css class to cut off the text inside the element after the sixth line */
 .desc {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

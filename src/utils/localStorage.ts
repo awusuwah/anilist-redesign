@@ -5,7 +5,10 @@ import { useAnimeStore } from "~/store/anime";
  */
 export const syncLocalStorageWithStore = () => {
   const animes = JSON.parse(localStorage.getItem("animes") || "[]");
+  const currentlyViewing = JSON.parse(localStorage.getItem("currentlyViewing") || "null");
 
   // Store the data in the store
-  useAnimeStore().setAnimes(animes);
+  const animeStore = useAnimeStore();
+  animeStore.setAnimes(animes);
+  animeStore.setCurrentlyViewing(currentlyViewing);
 };
