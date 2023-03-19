@@ -7,7 +7,7 @@
     <section class="flex-1 px-4 py-5 text-xs text-gray-300 flex flex-col justify-between">
       <div>
         <h1 class="font-bold text-lg text-white drop-shadow-xl flex flex-row gap-x-3">
-          {{ anime.title.english }}
+          {{ anime.title.english || anime.title.romaji }}
           <StarRating :rating="anime.averageScore" />
         </h1>
         <p class="desc" v-html="anime.description" />
@@ -51,11 +51,7 @@ import CharacterCard from "@/character/CharacterCard.vue";
 import Icon from "@/icon/Icon.vue";
 import StarRating from "@/starRating/StarRating.vue";
 
-import { useAnimeStore, type Anime } from "~/store/anime";
-import { fetchAnime } from "~/utils/fetchData";
-
-// Static Variables
-const ANIME_ID = 142329;
+import { type Anime } from "~/store/anime";
 
 export default {
   name: "AnimeShowcase",
@@ -64,17 +60,13 @@ export default {
     Icon,
     StarRating,
   },
-  async setup() {
-    const currentlyViewing: any = useAnimeStore().getCurrentlyViewing();
-    fetchAnime(currentlyViewing?.id);
-  },
-  computed: {
-    anime() {
-      const animeStore = useAnimeStore();
-      return animeStore.getAnimeById(animeStore.getCurrentlyViewing()?.id);
-    },
-    ratedString() {
-      return `#${this.anime?.rankings[0].rank} ${this.anime?.rankings[0].context}`;
+  props: {
+    /**
+     * The anime which is being displayed in the showcase.
+     */
+    anime: {
+      type: Object as () => Anime,
+      default: null,
     },
   },
 };

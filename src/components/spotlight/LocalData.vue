@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-1 divide-y">
       <div v-for="anime in allAnimes" :key="anime.id" :class="itemClasses">
-        <span>{{ anime.title.english }}</span>
+        <span>{{ anime.title.english || anime.title.romaji }}</span>
         <div class="flex flex-row gap-x-1">
           <Icon
             icon="check"

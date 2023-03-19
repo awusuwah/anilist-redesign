@@ -11,7 +11,7 @@ export const fetchAnime = async (id: number) => {
 
   // Check if the anime is stored in the store
   const animeData = useAnimeStore().getAnimeById(id);
-  if (animeData) return animeData;
+  if (animeData) return;
 
   // Fetch the anime from the api
   const data = (await useGql()("anime", { id: id })) as Response;

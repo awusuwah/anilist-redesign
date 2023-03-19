@@ -3,14 +3,14 @@ query anime($id: Int) {
     id
     title {
       english
-      native
+      romaji
     }
     description
     coverImage {
       extraLarge
     }
     averageScore
-    characters(sort: RELEVANCE, page: 1, perPage: 6) {
+    characters(perPage: 6, sort: [ROLE, RELEVANCE, ID]) {
       nodes {
         id
         name {
