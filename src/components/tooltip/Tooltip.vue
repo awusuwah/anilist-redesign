@@ -57,7 +57,6 @@ export default {
 
       const activatorRef = this.$refs.activator as any;
       const tooltipRef = this.$refs.tooltip as any;
-      const arrowRef = this.$refs.arrow as any;
 
       document.body.appendChild(tooltipRef);
 

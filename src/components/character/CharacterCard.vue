@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import Tooltip from "@/tooltip/Tooltip.vue";
-import { type Character } from "~/store/anime";
+import { type Character } from "~/types/anilist";
 
 export default {
   name: "CharacterCard",

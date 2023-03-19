@@ -6,6 +6,7 @@
 
     <div class="flex-1">
       <input
+        ref="commandInput"
         v-model="query"
         type="text"
         class="w-full h-14 bg-gray-800"
@@ -32,6 +33,9 @@ export default {
     };
   },
   computed: {
+    /**
+     * The classes which are applied to the wrapper element.
+     */
     wrapperClasses() {
       return {
         "w-[900px] h-14 bg-gray-800 rounded-lg flex flex-row overflow-hidden": true,
@@ -40,17 +44,26 @@ export default {
       };
     },
 
+    /**
+     * The classes which are applied to the input element.
+     */
     inputClasses() {
       return {
         "text-white focus-within:outline-none": true,
       };
     },
 
+    /**
+     * The classes which are applied to the `query` button.
+     */
     buttonClasses() {
       return {
         "px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold transition-all focus:outline-none": true,
       };
     },
+  },
+  mounted() {
+    this.$refs.commandInput.focus();
   },
   methods: {
     /**

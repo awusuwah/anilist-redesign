@@ -1,0 +1,24 @@
+query user($name: String) {
+  User(name: $name) {
+    id
+    name
+    avatar {
+      large
+    }
+    donatorBadge
+    statistics {
+      anime {
+        count
+        minutesWatched
+        genrePreview: genres(limit: 5, sort: COUNT_DESC) {
+          genre
+          count
+        }
+      }
+      manga {
+        count
+        minutesWatched
+      }
+    }
+  }
+}

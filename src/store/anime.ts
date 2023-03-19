@@ -1,134 +1,102 @@
 import { defineStore } from "pinia";
+import { type Anime } from "~/types/anilist";
 
 /**
  * The store which contains information about the animes.
  */
 export const useAnimeStore = defineStore("anime", {
-  state: () => ({
-    animes: [] as Anime[],
-    currentlyViewing: null as number | null,
+  state: (): State => ({
+    anime: [],
+    viewing: null,
   }),
   getters: {
     /**
-     * Get a specific anime by it's id.
+     * Get a specific anime by it's id from the store. If the anime is not found, null is returned.
+     *
+     * @param { State } state - The current state of the store.
      */
-    getAnimeById: (state) => {
-      return (animeId: number) => state.animes.find((anime: Anime) => anime.id === animeId);
+    getAnimeById: (state: State): ((animeId: number) => Anime | null) => {
+      return (animeId: number) => state.anime.find((anime: Anime) => anime.id === animeId) || null;
     },
 
     /**
-     * Get every single anime in the store.
+     * Get every anime from the store.
+     *
+     * @param { State } state - The current state of the store.
      */
-    getAllAnimes: (state) => {
-      return () => state.animes;
+    getAllAnime: (state: State): (() => Anime[]) => {
+      return () => state.anime;
     },
 
     /**
      * Get the anime that is currently being viewed.
+     *
+     * @param { State } state - The current state of the store.
      */
-    getCurrentlyViewing: (state) => {
-      return () => state.animes.find((anime: Anime) => anime.id === state.currentlyViewing);
+    getViewing: (state: State): (() => Anime | null) => {
+      return () => state.anime.find((anime: Anime) => anime.id === state.viewing) || null;
     },
   },
   actions: {
+    /**
+     * Set the anime in store. Any anime that is already in the store will be overwritten.
+     *
+     * @param { Anime[] } anime - The list of anime to store.
+     */
+    setAnime(anime: Anime[]) {
+      this.anime = anime;
+
+      // Store the anime in the localStorage
+      localStorage.setItem("anime", JSON.stringify(anime));
+    },
+
     /**
      * Store an anime in the store.
      *
      * @param { Anime } anime - The anime to store.
      */
     storeAnime(anime: Anime) {
-      const allAnimes = [...this.animes, anime];
-      this.animes = allAnimes;
+      const allAnime = [...this.anime, anime];
+      this.anime = allAnime;
 
-      // Store the anime in localStorage
-      localStorage.setItem("animes", JSON.stringify(allAnimes));
+      // Store the anime in the localStorage
+      localStorage.setItem("anime", JSON.stringify(allAnime));
     },
 
     /**
-     * Delete an anime from the store.
+     * Remove an anime from the store.
      *
-     * @param { number } animeId - The id of the anime to delete.
+     * @param { number } animeId - The id of the anime to remove.
      */
-    deleteAnime(animeId: number) {
-      const allAnimes = this.animes.filter((anime: Anime) => anime.id !== animeId);
-      this.animes = allAnimes;
-      this.currentlyViewing = animeId !== this.currentlyViewing ? this.currentlyViewing : allAnimes.length > 0 ? allAnimes[0].id : null;
+    removeAnime(animeId: number) {
+      const remainingAnime = this.anime.filter((anime: Anime) => anime.id !== animeId);
+      this.anime = remainingAnime;
 
-      // Store the anime in localStorage
-      localStorage.setItem("animes", JSON.stringify(allAnimes));
+      // If the `viewing` anime is the anime that is being removed, set the `viewing` anime to the first anime in the store.
+      // If there are no anime left in the store, set the `viewing` anime to null.
+      this.viewing = animeId !== this.viewing ? this.viewing : remainingAnime.length > 0 ? remainingAnime[0].id : null;
+
+      // Store the anime in the localStorage
+      localStorage.setItem("anime", JSON.stringify(remainingAnime));
+      localStorage.setItem("viewingAnime", JSON.stringify(this.viewing));
     },
 
     /**
-     * Set the animes in the store to the provided list.
+     * Set the anime that is currently being viewed.
      *
-     * @param { Anime[] } animes - The list of animes to set.
+     * @param { number } animeId - The id of the anime to mark as currently viewed.
      */
-    setAnimes(animes: Anime[]) {
-      this.animes = animes;
-      localStorage.setItem("animes", JSON.stringify(animes));
-    },
+    setViewing(animeId: number) {
+      this.viewing = this.anime.find((anime: Anime) => anime.id === animeId)?.id ? animeId : null;
 
-    /**
-     * Set what anime is currently being viewed.
-     *
-     * @param { number } animeId - The id of the anime to set as currently viewing.
-     */
-    setCurrentlyViewing(animeId: number) {
-      this.currentlyViewing = animeId;
-      localStorage.setItem("currentlyViewing", JSON.stringify(animeId));
+      // Store the viewing anime in the localStorage
+      localStorage.setItem("viewingAnime", JSON.stringify(animeId));
     },
   },
 });
 
-export type Anime = {
-  id: number;
-  title: {
-    english: string;
-    romaji: string;
-  };
-  description: string;
-  coverImage: {
-    extraLarge: string;
-  };
-  averageScore: number;
-  characters: {
-    nodes: Character[];
-  };
-  rankings: [
-    rank: {
-      id: number;
-      rank: number;
-      context: string;
-    }
-  ];
-  startDate: {
-    year: number;
-    month: number;
-    day: number;
-  };
-  endDate: {
-    year: number;
-    month: number;
-    day: number;
-  };
-  studios: {
-    nodes: [
-      studio: {
-        id: number;
-        name: string;
-      }
-    ];
-  };
-  genres: string[];
-};
-
-export type Character = {
-  id: number;
-  name: {
-    full: string;
-  };
-  image: {
-    large: string;
-  };
-  siteUrl: string;
+/** Represent the state of the store */
+export type State = {
+  anime: Anime[];
+  viewing: number | null;
 };

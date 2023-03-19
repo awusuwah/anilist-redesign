@@ -20,19 +20,10 @@ export default {
     /**
      * The rating to display. This can be any number between 0 and 5, in increments of 0.5.
      */
-    // rating: {
-    //   type: Number,
-    //   required: true,
-    //   validator: (value: number) =>
-    //     value >= 0 && value <= 5 && value % 0.5 === 0,
-    // },
     rating: {
       type: Number,
       required: true,
     },
-  },
-  computed: {
-    // create
   },
 };
 </script>

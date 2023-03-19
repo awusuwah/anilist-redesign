@@ -51,7 +51,7 @@ import CharacterCard from "@/character/CharacterCard.vue";
 import Icon from "@/icon/Icon.vue";
 import StarRating from "@/starRating/StarRating.vue";
 
-import { type Anime } from "~/store/anime";
+import { type Anime } from "~/types/anilist";
 
 export default {
   name: "AnimeShowcase",

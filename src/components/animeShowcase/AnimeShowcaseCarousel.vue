@@ -27,7 +27,7 @@
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 
 import AnimeShowcase from "@/animeShowcase/AnimeShowcase.vue";
-import { type Anime } from "~/store/anime";
+import { type Anime } from "~/types/anilist";
 
 import "vue3-carousel/dist/carousel.css";
 

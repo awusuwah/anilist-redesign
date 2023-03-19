@@ -10,14 +10,14 @@
             icon="check"
             size="md"
             :class="[checkIconClasses, { 'text-emerald-500': anime.id === currentlyViewing.id }]"
-            @click="displayAnime(anime.id)"
+            @click="setViewing(anime.id)"
           />
 
           <Icon
             icon="delete"
             size="md"
             class="text-gray-400 hover:text-rose-800 transition-all cursor-pointer"
-            @click="deleteAnime(anime.id)"
+            @click="removeAnime(anime.id)"
           />
         </div>
       </div>
@@ -29,32 +29,44 @@
 import Icon from "@/icon/Icon.vue";
 
 import { useAnimeStore } from "~/store/anime";
+import { type Anime } from "~/types/anilist";
 
 export default {
   name: "LocalData",
   components: {
     Icon,
   },
-  data() {
-    return {
-      hovering: null,
-    };
-  },
   computed: {
-    allAnimes() {
-      return useAnimeStore().getAllAnimes();
+    /**
+     * Get a list of all the anime that are stored locally.
+     *
+     * @returns { Anime[] } Returns a list of anime.
+     */
+    allAnimes(): Anime[] {
+      return useAnimeStore().getAllAnime();
     },
 
-    currentlyViewing() {
-      return useAnimeStore().getCurrentlyViewing();
+    /**
+     * Get the anime which is currently being viewed.
+     *
+     * @returns { Anime } Returns a single anime or null.
+     */
+    currentlyViewing(): Anime | null {
+      return useAnimeStore().getViewing();
     },
 
+    /**
+     * The classes which are applied to the single icons of the list.
+     */
     itemClasses() {
       return {
         "flex items-center justify-between px-1 py-2 text-sm text-gray-400": true,
       };
     },
 
+    /**
+     * The classes which are applied to the `check` icons in the list items.
+     */
     checkIconClasses() {
       return {
         "hover:text-green-500 transition-all cursor-pointer": true,
@@ -63,21 +75,21 @@ export default {
   },
   methods: {
     /**
-     * Delete an anime from the local database. This is useful for when the data needs to be refetched.
+     * Remove an anime from the local storage.
      *
-     * @param { number } animeId - The ID of the anime to delete.
+     * @param { number } animeId - The ID of the anime to remove.
      */
-    deleteAnime(animeId: number) {
-      useAnimeStore().deleteAnime(animeId);
+    removeAnime(animeId: number) {
+      useAnimeStore().removeAnime(animeId);
     },
 
     /**
-     * Display an on the page.
+     * Set an anime as the currently being viewed anime.
      *
-     * @param { number } animeId - The ID of the anime to display.
+     * @param { number } animeId - The ID of the anime to set as the currently being viewed anime.
      */
-    displayAnime(animeId: number) {
-      useAnimeStore().setCurrentlyViewing(animeId);
+    setViewing(animeId: number) {
+      useAnimeStore().setViewing(animeId);
     },
   },
 };

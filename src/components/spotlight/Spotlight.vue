@@ -10,8 +10,9 @@
           <section class="flex flex-col gap-3">
             <SearchInput />
 
-            <div>
-              <LocalData />
+            <div class="flex flex-row gap-x-3">
+              <LocalAnime />
+              <LocalUsers />
             </div>
           </section>
         </div>
@@ -22,14 +23,16 @@
 
 <script lang="ts">
 import Icon from "@/icon/Icon.vue";
-import LocalData from "@/spotlight/LocalData.vue";
+import LocalAnime from "@/spotlight/LocalAnime.vue";
+import LocalUsers from "@/spotlight/LocalUsers.vue";
 import SearchInput from "@/spotlight/SearchInput.vue";
 
 export default {
   name: "Spotlight",
   components: {
     Icon,
-    LocalData,
+    LocalAnime,
+    LocalUsers,
     SearchInput,
   },
   mounted() {
